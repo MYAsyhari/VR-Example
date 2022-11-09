@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script> <!-- Main A-Frame Framework-->
+    <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script> <!--For Environment: https://github.com/supermedium/aframe-environment-component-->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> <!--For gltf animation: https://github.com/n5ro/aframe-extras-->
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script> <!--For Mouse Event: https://aframe.io/docs/1.3.0/introduction/interactions-and-controllers.html-->
+  </head>
+  <body>
+    <a-scene gltf-model="dracoDecoderPath: https://www.gstatic.com/draco/v1/decoders/;
+    meshoptDecoderPath: https://unpkg.com/meshoptimizer@0.16.0/meshopt_decoder.js;">
+      
+      <!--Cursor-->
+      <a-camera look-controls>
+        <a-entity
+        raycaster="objects:.bisadiklik"
+        cursor="fuse: true; fuseTimeout: 2000"
+        position="0 0 -1"
+        geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+        material="color: black; shader: flat"
+        animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 500; from: 0.1 0.1 0.1; to: 1 1 1"
+        animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 2000; from: 1 1 1; to: 0.1 0.1 0.1"
+        animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
+        </a-entity>
+      </a-camera>  
+
+      <!--Kumpulan Asset-->
+      <a-asset>
+        <a-asset-item id="orang" src="https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/young-korrigan/model.gltf"></a-asset-item>
+        <a-asset-item id="rumah" src="https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/house-7/model.gltf"></a-asset-item>
+      </a-asset>
+
+      <!--Entitas dan Animasi-->
+      <!--https://aframe.io/docs/1.3.0/components/animation.html-->
+      <a-entity environment="preset: forest; fog:0.95"></a-entity>
+      <a-entity gltf-model="#orang" position="0 0 -3" rotation="0 0 0" scale="2 2 2" animation-mixer
+        animation="property:position; to:0 0 -1; loop:true; dur:4000; dir:alternate;"
+      ></a-entity>
+      <a-entity gltf-model="#rumah" position="0 0 -5" rotation="0 0 0" scale="4 4 4"  
+        animation="property:scale; to:4.2 4.2 4.2; loop:true; dur:2000; elasticity:100; dir:alternate;"
+      ></a-entity>
+      
+      <!--Contoh Event-->
+      <a-box id="akantampil" position="2 3 -4" rotation="0 0 0" scale="3 2 0.01" color="green" visible="false">
+          <a-text id="gantiteks" value= "Assalamu'alaikum" position="-0.2 0 2" rotation="0 0 0" scale="0.3 0.3 0.3" color="white"
+      ></a-text>
+      </a-box>
+      <a-sphere position="0 1 -2" rotation="0 0 0" scale="0.2 0.2 0.2" color="white" class="bisadiklik"
+          event-set__enter="_event: mouseenter; color: #FFFFFF"
+          event-set__leave="_event: mouseleave; color: #000000"    
+          event-set__enter2="_event: mouseenter; _target:#akantampil; visible:true"
+          event-set__leave2="_event: mouseleave; _target:#akantampil; visible:false"
+          animation__mouseenter="property: components.material.material.color; type: color; to: blue; startEvents: mouseenter; dur: 500"
+          animation__mouseleave="property: components.material.material.color; type: color; to: red; startEvents: mouseleave; dur: 500"
+          event-set__click="_event: click; value: tulisannya berubah; _target: #gantiteks; _delay:1"
+      ></a-sphere>
+      
+    </a-scene>
+  </body>
+</html>
